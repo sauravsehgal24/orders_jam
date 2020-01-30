@@ -1,12 +1,10 @@
 const express = require("express");
 const response = require('../config/httpResponses');
+
+
 const orders = express.Router();
 
 orders.get('/',(req,res)=>{
-    return res.status(response.Created.status).json({
-        message: response.OK.message,
-        payload
-      });
 })
 
 orders.post('/add',(req,res)=>{
