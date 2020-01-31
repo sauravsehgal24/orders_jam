@@ -21,7 +21,6 @@ CREATE TABLE orders (
 -- **********************************************************
 CREATE TABLE workers (
  workerId varchar(100) NOT NULL, 
- orderId varchar(100) DEFAULT NULL, 
  name varchar(100) NOT NULL,
  company varchar(100) NOT NULL,
  email varchar(100) NOT NULL, 
@@ -37,7 +36,7 @@ CREATE TABLE ordersAndWorkers (
  orderId varchar(100) NOT NULL, 
  PRIMARY KEY(`id`),
  UNIQUE KEY `id` (`id`),
- CONSTRAINT `fk_i_o` FOREIGN KEY (`orderId`) REFERENCES `orders` (`orderId`) ON DELETE CASCADE
+ CONSTRAINT `fk_i_o` FOREIGN KEY (`orderId`) REFERENCES `orders` (`orderId`) ON DELETE CASCADE,
  CONSTRAINT `fk_i_w` FOREIGN KEY (`workerId`) REFERENCES `workers` (`workerId`) ON DELETE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

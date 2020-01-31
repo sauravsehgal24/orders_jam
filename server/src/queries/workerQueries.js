@@ -1,8 +1,10 @@
 module.exports = {
 
-    insertOne: 'INSERT INTO workers (workerId, orderId ,name, company ,email) VALUES (uuid(),null ,?, ?, ?)',
+    insertOne: 'INSERT INTO workers (workerId, name, company ,email) VALUES (uuid(),?, ?, ?)',
 
     getAllWorkers:'select * from workers',
+
+    deleteWorkerById:'delete from workers where workerId = ?',
 
     findIdByUsername: 'SELECT userId FROM users WHERE username = ?',
     

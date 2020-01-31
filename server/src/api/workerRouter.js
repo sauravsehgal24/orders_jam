@@ -10,7 +10,6 @@ workers.get('/',(req,res)=>{
     conn=>conn.query(Query.getAllWorkers)
     )
     .then((result)=>{
-        console.log(`result is : ${result}`)
         return res.status(response.Created.status).json({
             message: response.OK.message,
             result
@@ -22,15 +21,39 @@ workers.get('/',(req,res)=>{
 })
 
 workers.post('/add',(req,res)=>{
-    return res.status(response.Created.status).json({
-        message: response.OK.message,
-      });
+
+    const worker = req.body
+    const {name,company,email} = worker
+
+    return Promise.using(getSqlConnection(),
+    conn=>conn.query(Query.insertOne, [name,company,email])
+    )
+    .then((result)=>{
+        return res.status(response.Created.status).json({
+            message: response.Created.message,
+          });
+    })
+    .catch(err=>{
+        console.log(`error adding worker ${err}`)
+    })
+
 })
 
 workers.delete('/delete',(req,res)=>{
-    return res.status(response.Created.status).json({
-        message: response.Accepted.message,
-      });
+    const worker = req.body
+    const {workerId} = worker
+
+    return Promise.using(getSqlConnection(),
+    conn=>conn.query(Query.deleteWorkerById, [workerId])
+    )
+    .then((result)=>{
+        return res.status(response.OK.status).json({
+            message: response.OK.message,
+          });
+    })
+    .catch(err=>{
+        console.log(`error deleting worker ${err}`)
+    })
 })
 
 module.exports = workers;

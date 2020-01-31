@@ -1,26 +1,27 @@
 const express = require("express");
 const response = require('../config/httpResponses');
+const Query = require('../queries/orderWorkerQueries');
+const Promise = require('bluebird');
+const getSqlConnection = require('../config/connectionPool');
 const ordersWorkers = express.Router();
 
-ordersWorkers.get('/',(req,res)=>{
-    return res.status(response.Created.status).json({
-        message: response.OK.message,
-        payload
-      });
+ordersWorkers.post('/link',(req,res)=>{
+    const ow = req.body
+    const {workerId,orderId} = ow
+
+    return Promise.using(getSqlConnection(),
+    conn=>conn.query(Query.linkOrderAndWorker, [workerId,orderId])
+    )
+    .then((result)=>{
+        return res.status(response.Created.status).json({
+            message: response.Created.message,
+          });
+    })
+    .catch(err=>{
+        console.log(`error linking worker ${err}`)
+    })
 })
 
-ordersWorkers.post('/add',(req,res)=>{
-    return res.status(response.Created.status).json({
-        message: response.OK.message,
-      });
-})
-
-ordersWorkers.delete('/delete',(req,res)=>{
-    return res.status(response.Created.status).json({
-        message: response.Accepted.message,
-        payload
-      });
-})
 
 module.exports = ordersWorkers;
 
